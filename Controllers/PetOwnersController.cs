@@ -22,5 +22,48 @@ namespace pet_hotel.Controllers
         public IEnumerable<PetOwner> GetPets() {
             return new List<PetOwner>();
         }
+
+        // GET /api/petOwners/:id
+        [HttpGet("{id}")]
+        public ActionResult<PetOwner> GetById(int id)
+        {
+        PetOwner owner = _context.PetOwners
+            .SingleOrDefault(owner => owner.id == id);
+            //SELECT * FROM PetOwners
+            //WHERE owner.id = $1
+
+        // Return a `404 Not Found` if the owner doesn't exist
+        if (owner is null)
+        {
+            return NotFound();
+        }
+
+            return owner;
+        }
+        //POST api/petOwners
+        [HttpPost]
+        public PetOwner Post(PetOwner owner)
+        {
+        _context.Add(owner);
+        _context.SaveChanges();
+
+        return owner;
+        }
+
+        //DELETE api/petOwners/:id
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            // Find the petowner, by ID
+            PetOwner owner = _context.PetOwners.Find(id);
+
+            // Tell the DB that we want to remove this owner
+            _context.PetOwners.Remove(owner);
+
+            // ...and save the changes to the database
+            _context.SaveChanges(); ;
+        }
     }
+
 }
+
