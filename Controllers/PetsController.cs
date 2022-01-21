@@ -24,7 +24,9 @@ namespace pet_hotel.Controllers
         
         [HttpGet]
         public IEnumerable<Pet> GetPets() {
-            return new List<Pet>();
+            return _context.Pets
+
+            .Include(pet=>pet.petOwner);
         }
 
 
@@ -78,10 +80,10 @@ namespace pet_hotel.Controllers
             //Find the Pet object from PetList that we need to update
             Pet pet = _context.Pets.Find(id);
 
-            if (pet == -1)
-            {
-            return NotFound();
-            }
+            // if (pet == -1)
+            // {
+            // return NotFound();
+            // };
 
             //Update that Pet object with the "petToUpdate" data that comes
             //into this route.
